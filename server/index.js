@@ -4,10 +4,11 @@ var service = require('../server/protos/greet_grpc_pb')
 var grpc = require('grpc')
 
 /*
-  Implements thegreet RPC method.
+  Implements the greet RPC method.
 */
 
 function greet(call, callback) {
+  console.log("Hello From server - greet")
   var greeting = new greets.GreetResponse()
   greeting.setResult(
     "Hello " + call.request.getGreeting().getFirstName() + ' '
@@ -17,6 +18,7 @@ function greet(call, callback) {
 }
 
 function sum(call, callback) {
+  console.log("Hello From server - sum")
   var sum = new greets.SumResponse()
   sum.setResult(
     call.request.getFirstNumber() + call.request.getSecondNumber()

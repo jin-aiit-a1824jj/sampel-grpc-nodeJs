@@ -3,9 +3,8 @@ var service = require('../server/protos/greet_grpc_pb')
 
 var grpc = require('grpc')
 
-function main() {
-
-  console.log("Hello From Client")
+function callGreeting() {
+  console.log("Hello From Client - callGreeting")
 
   var client = new service.GreetServiceClient(
     '127.0.0.1:5000',
@@ -30,7 +29,16 @@ function main() {
       console.error(error)
     }
   })
+}
 
+function callGreetingExercise(){
+  console.log("Hello From Client - callGreetingExercise")
+
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+  
   // Excercise SUM API
   var request2 = new greets.SumRequest()
   request2.setFirstNumber(3)
@@ -42,5 +50,10 @@ function main() {
       console.error(error)
     }
   })
+}
+
+function main() {
+  callGreeting()
+  callGreetingExercise()
 }
 main()
