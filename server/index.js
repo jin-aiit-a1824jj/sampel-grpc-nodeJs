@@ -16,9 +16,17 @@ function greet(call, callback) {
   callback(null, greeting)
 }
 
+function sum(call, callback) {
+  var sum = new greets.SumResponse()
+  sum.setResult(
+    call.request.getFirstNumber() + call.request.getSecondNumber()
+  )
+  callback(null, sum)
+}
+
 function main() {
   var server = new grpc.Server()
-  server.addService(service.GreetServiceService, {greet: greet})
+  server.addService(service.GreetServiceService, {greet: greet, sum})
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
   server.start()
 

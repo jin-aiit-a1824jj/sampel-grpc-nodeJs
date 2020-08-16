@@ -30,5 +30,17 @@ function main() {
       console.error(error)
     }
   })
+
+  // Excercise SUM API
+  var request2 = new greets.SumRequest()
+  request2.setFirstNumber(3)
+  request2.setSecondNumber(10)
+  client.sum(request2, (error, response)=>{
+    if(!error){
+      console.log("Sum Response: ", response.getResult() )
+    } else {
+      console.error(error)
+    }
+  })
 }
 main()

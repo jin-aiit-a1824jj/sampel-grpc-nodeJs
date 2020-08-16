@@ -15,7 +15,19 @@ message GreetResponse {
   string result = 1;
 }
 
+message SumRequest {
+  int32 first_number = 1;
+  int32 second_number = 2;
+}
+
+message SumResponse {
+  int32 result = 1;
+}
+
 service GreetService {
   //unary API
   rpc Greet(GreetRequest) returns (GreetResponse) {}
+
+  //unary API - exercise
+  rpc Sum(SumRequest) returns (SumResponse) {}
 }
