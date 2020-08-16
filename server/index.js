@@ -10,7 +10,8 @@ var grpc = require('grpc')
 function greet(call, callback) {
   var greeting = new greets.GreetResponse()
   greeting.setResult(
-    "Hello " + call.request.getGreeting().getFirstname()
+    "Hello " + call.request.getGreeting().getFirstName() + ' '
+    + call.request.getGreeting().getLastName()
   )
   callback(null, greeting)
 }
