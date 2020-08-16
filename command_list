@@ -13,3 +13,4 @@ npm init
 code .
 
 npm install google-protobuf
+npm install grpc
