@@ -28,7 +28,7 @@ message GreetManyTimesRequest {
   Greeting greeting = 1;
 }
 
-message GreetTimesRequest {
+message GreetManyTimesResponse {
   string result = 1;
 }
 
@@ -40,5 +40,5 @@ service GreetService {
   rpc Sum(SumRequest) returns (SumResponse) {};
 
   //streaming API
-  rpc GreetManyTimes(GreetManyTimesRequest) returns ( stream GreetTimesRequest){};
+  rpc GreetManyTimes(GreetManyTimesRequest) returns ( stream GreetManyTimesResponse){};
 }

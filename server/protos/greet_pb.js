@@ -13,9 +13,9 @@ var goog = jspb;
 var global = Function('return this')();
 
 goog.exportSymbol('proto.greet.GreetManyTimesRequest', null, global);
+goog.exportSymbol('proto.greet.GreetManyTimesResponse', null, global);
 goog.exportSymbol('proto.greet.GreetRequest', null, global);
 goog.exportSymbol('proto.greet.GreetResponse', null, global);
-goog.exportSymbol('proto.greet.GreetTimesRequest', null, global);
 goog.exportSymbol('proto.greet.Greeting', null, global);
 goog.exportSymbol('proto.greet.SumRequest', null, global);
 goog.exportSymbol('proto.greet.SumResponse', null, global);
@@ -155,16 +155,16 @@ if (goog.DEBUG && !COMPILED) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.greet.GreetTimesRequest = function(opt_data) {
+proto.greet.GreetManyTimesResponse = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.greet.GreetTimesRequest, jspb.Message);
+goog.inherits(proto.greet.GreetManyTimesResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.greet.GreetTimesRequest.displayName = 'proto.greet.GreetTimesRequest';
+  proto.greet.GreetManyTimesResponse.displayName = 'proto.greet.GreetManyTimesResponse';
 }
 
 
@@ -1064,8 +1064,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.greet.GreetTimesRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.greet.GreetTimesRequest.toObject(opt_includeInstance, this);
+proto.greet.GreetManyTimesResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.greet.GreetManyTimesResponse.toObject(opt_includeInstance, this);
 };
 
 
@@ -1074,11 +1074,11 @@ proto.greet.GreetTimesRequest.prototype.toObject = function(opt_includeInstance)
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.greet.GreetTimesRequest} msg The msg instance to transform.
+ * @param {!proto.greet.GreetManyTimesResponse} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.greet.GreetTimesRequest.toObject = function(includeInstance, msg) {
+proto.greet.GreetManyTimesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     result: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
@@ -1094,23 +1094,23 @@ proto.greet.GreetTimesRequest.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.greet.GreetTimesRequest}
+ * @return {!proto.greet.GreetManyTimesResponse}
  */
-proto.greet.GreetTimesRequest.deserializeBinary = function(bytes) {
+proto.greet.GreetManyTimesResponse.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.greet.GreetTimesRequest;
-  return proto.greet.GreetTimesRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.greet.GreetManyTimesResponse;
+  return proto.greet.GreetManyTimesResponse.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.greet.GreetTimesRequest} msg The message object to deserialize into.
+ * @param {!proto.greet.GreetManyTimesResponse} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.greet.GreetTimesRequest}
+ * @return {!proto.greet.GreetManyTimesResponse}
  */
-proto.greet.GreetTimesRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.greet.GreetManyTimesResponse.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -1134,9 +1134,9 @@ proto.greet.GreetTimesRequest.deserializeBinaryFromReader = function(msg, reader
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.greet.GreetTimesRequest.prototype.serializeBinary = function() {
+proto.greet.GreetManyTimesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.greet.GreetTimesRequest.serializeBinaryToWriter(this, writer);
+  proto.greet.GreetManyTimesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -1144,11 +1144,11 @@ proto.greet.GreetTimesRequest.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.greet.GreetTimesRequest} message
+ * @param {!proto.greet.GreetManyTimesResponse} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.greet.GreetTimesRequest.serializeBinaryToWriter = function(message, writer) {
+proto.greet.GreetManyTimesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getResult();
   if (f.length > 0) {
@@ -1164,16 +1164,16 @@ proto.greet.GreetTimesRequest.serializeBinaryToWriter = function(message, writer
  * optional string result = 1;
  * @return {string}
  */
-proto.greet.GreetTimesRequest.prototype.getResult = function() {
+proto.greet.GreetManyTimesResponse.prototype.getResult = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.greet.GreetTimesRequest} returns this
+ * @return {!proto.greet.GreetManyTimesResponse} returns this
  */
-proto.greet.GreetTimesRequest.prototype.setResult = function(value) {
+proto.greet.GreetManyTimesResponse.prototype.setResult = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 

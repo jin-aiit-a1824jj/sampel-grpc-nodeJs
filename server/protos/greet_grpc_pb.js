@@ -15,6 +15,17 @@ function deserialize_greet_GreetManyTimesRequest(buffer_arg) {
   return protos_greet_pb.GreetManyTimesRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_greet_GreetManyTimesResponse(arg) {
+  if (!(arg instanceof protos_greet_pb.GreetManyTimesResponse)) {
+    throw new Error('Expected argument of type greet.GreetManyTimesResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_GreetManyTimesResponse(buffer_arg) {
+  return protos_greet_pb.GreetManyTimesResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greet_GreetRequest(arg) {
   if (!(arg instanceof protos_greet_pb.GreetRequest)) {
     throw new Error('Expected argument of type greet.GreetRequest');
@@ -35,17 +46,6 @@ function serialize_greet_GreetResponse(arg) {
 
 function deserialize_greet_GreetResponse(buffer_arg) {
   return protos_greet_pb.GreetResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_greet_GreetTimesRequest(arg) {
-  if (!(arg instanceof protos_greet_pb.GreetTimesRequest)) {
-    throw new Error('Expected argument of type greet.GreetTimesRequest');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_greet_GreetTimesRequest(buffer_arg) {
-  return protos_greet_pb.GreetTimesRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_greet_SumRequest(arg) {
@@ -102,11 +102,11 @@ greetManyTimes: {
     requestStream: false,
     responseStream: true,
     requestType: protos_greet_pb.GreetManyTimesRequest,
-    responseType: protos_greet_pb.GreetTimesRequest,
+    responseType: protos_greet_pb.GreetManyTimesResponse,
     requestSerialize: serialize_greet_GreetManyTimesRequest,
     requestDeserialize: deserialize_greet_GreetManyTimesRequest,
-    responseSerialize: serialize_greet_GreetTimesRequest,
-    responseDeserialize: deserialize_greet_GreetTimesRequest,
+    responseSerialize: serialize_greet_GreetManyTimesResponse,
+    responseDeserialize: deserialize_greet_GreetManyTimesResponse,
   },
 };
 

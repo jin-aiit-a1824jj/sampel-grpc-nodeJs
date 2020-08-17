@@ -32,7 +32,7 @@ function greetManyTimes(call, callback) {
   var firstName = call.request.getGreeting().getFirstName()
   
   let count = 0, intervalID = setInterval(function(){
-    var greetManyTimesResponse = new greets.greetManyTimesResponse()
+    var greetManyTimesResponse = new greets.GreetManyTimesResponse()
     greetManyTimesResponse.setResult(firstName)
     
     // setup streaming
