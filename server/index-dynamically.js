@@ -26,10 +26,28 @@ function sum(call, callback) {
   callback(null, {result: call.request.first_number + call.request.second_number})
 }
 
+function greetManyTimes(call, callback) {
+  var firstName = call.request.greeting.first_name;
+  
+  let count = 0, intervalID = setInterval(function(){
+    var greetManyTimesResponse = { result: "Hello " + firstName }
+    
+    // setup streaming
+    call.write(greetManyTimesResponse)
+    if(++count > 9){
+      clearInterval(intervalID)
+      call.end() // we have sent all message!
+    }  
+  }, 500)
+}
+
 function main(){
   const server = new grpc.Server()
   server.addService(greetPackageDefinition.GreetService.service, {
-    greet: greet, sum
+    greet: greet,
+    sum:sum,
+    greetManyTimes:greetManyTimes,
+
   })
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
   server.start()

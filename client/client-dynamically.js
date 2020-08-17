@@ -51,8 +51,42 @@ function callGreetingExercise(){
   })
 }
 
+function callGreetManyTime() {
+
+  var request = {
+    greeting: {
+      first_name: "Jerry",
+      second_name: "Tom"
+    }
+  }
+
+  var call = client.greetManyTimes(request, () => {})
+
+  call.on('data', (response) => {
+    console.log('Client Streaming Response: ', response.result)
+  })
+
+  call.on('status', (status)=> {
+    console.log("status:->");
+    console.log(status);
+    console.log(status.details);
+  })
+
+  call.on('error', (error) => {
+    console.log("error:->");
+    console.error(error);
+    console.error(error.details);
+  })
+
+  call.on('end', () => {
+    console.log('Streaming Ended!')
+  })
+
+}
+
 function main() {
-  callGreetings();
-  callGreetingExercise()
+  //callGreetings();
+  //callGreetingExercise()
+  callGreetManyTime()
 }
 main()
