@@ -67,6 +67,25 @@ function primeNumber(call, callback) {
   call.end()
 }
 
+function longGreet(call, callback) {
+  console.log("Hello From server - longGreet")
+
+  call.on('data', request => {
+     var fullName = request.getGreet().getFirstName() + " " + request.getGreet().getLastName()
+     console.log("Hello " + fullName)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', ()=>{
+    var response = new greets.LongGreetResponse()
+    response.setResult('Long Greet Client Streaming......')
+    callback(null, response)
+  })
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
@@ -75,6 +94,7 @@ function main() {
       sum: sum,
       greetManyTimes:greetManyTimes,
       primeNumber:primeNumber,
+      longGreet:longGreet,
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
