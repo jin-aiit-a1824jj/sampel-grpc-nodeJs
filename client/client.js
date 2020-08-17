@@ -128,6 +128,7 @@ function callGreetManyTimeExercise() {
 function callLongGreeting() {
   console.log("Hello From Client - callGreeting")
 
+  // Create our server client
   var client = new service.GreetServiceClient(
     '127.0.0.1:5000',
     grpc.credentials.createInsecure()
@@ -154,6 +155,15 @@ function callLongGreeting() {
     request.setGreet(greeting)
 
     call.write(request)
+
+    var requestTwo = new greets.LongGreetRequest()
+    var greetingTwo = new greets.Greeting()
+    greetingTwo.setFirstName("Stephane")
+    greetingTwo.setLastName("Marrek")
+
+    requestTwo.setGreet(greetingTwo)
+
+    call.write(requestTwo)
 
     if(++count > 3){
       clearInterval(intervalID)
