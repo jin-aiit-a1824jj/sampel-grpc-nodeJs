@@ -23,7 +23,39 @@ function callSum() {
   })
 }
 
+function callPrimeNumberDecomposition() {
+  var client = new calcService.CalculatorServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var request = new calc.PrimeNumberDecompositionRequest()
+
+  var number = 11 //567890
+
+  request.setNumber(number)
+
+  var call = client.primeNumberDecomposition(request, ()=>{})
+
+  call.on('data', response => {
+    console.log('Prime Factors Found: ', response.getPrimeFactor())
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('status', status => {
+    console.log(status)
+  })
+
+  call.on('end', () => {
+    console.log('Streamingg Ended!')
+  })
+}
+
 function main() {
-  callSum()
+  //callSum()
+  callPrimeNumberDecomposition()
 }
 main()
