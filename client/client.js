@@ -90,9 +90,45 @@ function callGreetManyTime() {
   })
 }
 
+function callGreetManyTimeExercise() {
+  var client = new service.GreetServiceClient(
+    'localhost:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  // create request
+  var request = new greets.PrimeNumberRequest()
+
+  // set the Greeting
+  request.setNumber(120)
+  
+  var call = client.primeNumber(request, () => {})
+  
+  call.on('data', (response) => {
+    console.log('Client Streaming Response: ', response.getResult())
+  })
+
+  call.on('status', (status)=> {
+    console.log("status:->");
+    console.log(status);
+    console.log(status.details);
+  })
+
+  call.on('error', (error) => {
+    console.log("error:->");
+    console.error(error);
+    console.error(error.details);
+  })
+
+  call.on('end', () => {
+    console.log('Streaming Ended!')
+  })
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
-  callGreetManyTime()
+  //callGreetManyTime()
+  callGreetManyTimeExercise()
 }
 main()

@@ -48,6 +48,28 @@ function deserialize_greet_GreetResponse(buffer_arg) {
   return protos_greet_pb.GreetResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_greet_PrimeNumberRequest(arg) {
+  if (!(arg instanceof protos_greet_pb.PrimeNumberRequest)) {
+    throw new Error('Expected argument of type greet.PrimeNumberRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_PrimeNumberRequest(buffer_arg) {
+  return protos_greet_pb.PrimeNumberRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greet_PrimeNumberResponse(arg) {
+  if (!(arg instanceof protos_greet_pb.PrimeNumberResponse)) {
+    throw new Error('Expected argument of type greet.PrimeNumberResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_PrimeNumberResponse(buffer_arg) {
+  return protos_greet_pb.PrimeNumberResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greet_SumRequest(arg) {
   if (!(arg instanceof protos_greet_pb.SumRequest)) {
     throw new Error('Expected argument of type greet.SumRequest');
@@ -107,6 +129,18 @@ greetManyTimes: {
     requestDeserialize: deserialize_greet_GreetManyTimesRequest,
     responseSerialize: serialize_greet_GreetManyTimesResponse,
     responseDeserialize: deserialize_greet_GreetManyTimesResponse,
+  },
+  // streaming API - exercise
+primeNumber: {
+    path: '/greet.GreetService/PrimeNumber',
+    requestStream: false,
+    responseStream: true,
+    requestType: protos_greet_pb.PrimeNumberRequest,
+    responseType: protos_greet_pb.PrimeNumberResponse,
+    requestSerialize: serialize_greet_PrimeNumberRequest,
+    requestDeserialize: deserialize_greet_PrimeNumberRequest,
+    responseSerialize: serialize_greet_PrimeNumberResponse,
+    responseDeserialize: deserialize_greet_PrimeNumberResponse,
   },
 };
 

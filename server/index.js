@@ -45,13 +45,36 @@ function greetManyTimes(call, callback) {
 
 }
 
+function primeNumber(call, callback) {
+  console.log("Hello From server - primeNumber")
+  
+  var number = call.request.getNumber()
+  var k = 2
+
+  while(number > 1){
+    if (number % k == 0){
+      
+      var primeNumberResponse = new greets.PrimeNumberResponse()
+      primeNumberResponse.setResult(k)
+      call.write(primeNumberResponse)
+
+      number /= k
+    } else {
+      k += 1
+    }
+  }
+
+  call.end()
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
     {
       greet: greet,
       sum: sum,
-      greetManyTimes:greetManyTimes
+      greetManyTimes:greetManyTimes,
+      primeNumber:primeNumber,
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
