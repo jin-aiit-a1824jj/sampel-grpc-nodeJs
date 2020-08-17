@@ -125,10 +125,49 @@ function callGreetManyTimeExercise() {
   })
 }
 
+function callLongGreeting() {
+  console.log("Hello From Client - callGreeting")
+
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var request = new greets.LongGreetRequest()
+  
+  var call = client.longGreet(request, (error, response) => {
+    if(!error){
+        console.log('Server Response: ', response.getResult())
+    }else {
+        console.error(error)
+    }
+  })
+
+  let count = 0, intervalID = setInterval(function(){
+    console.log('Sending message ' + count)
+
+    var request = new greets.LongGreetRequest()
+    var greeting = new greets.Greeting()
+    greeting.setFirstName("Paule")
+    greeting.setLastName("Dichone")
+
+    request.setGreet(greeting)
+
+    call.write(request)
+
+    if(++count > 3){
+      clearInterval(intervalID)
+      call.end() // we have sent all the message
+    }
+  }, 1000)
+
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
   //callGreetManyTime()
-  callGreetManyTimeExercise()
+  //callGreetManyTimeExercise()
+  callLongGreeting()
 }
 main()
