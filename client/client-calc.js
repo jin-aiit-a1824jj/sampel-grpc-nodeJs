@@ -54,8 +54,51 @@ function callPrimeNumberDecomposition() {
   })
 }
 
+function callComputeAverage(){
+  var client = new calcService.CalculatorServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var request = new calc.ComputeAverageRequest()
+
+  var call = client.computeAverage(request, (error, response) => {
+    if(!error){
+      console.log('Received a response from the server - Average: ' + response.getAverage())
+    } else {
+      console.error(error)
+    }
+  })
+
+  // var requestOne = new calc.ComputeAverageRequest()
+  // requestOne.setNumber(1)  
+
+  // var requestTwo = new calc.ComputeAverageRequest()
+  // requestTwo.setNumber(2)  
+
+  // var requestThree = new calc.ComputeAverageRequest()
+  // requestThree.setNumber(3)  
+
+  // var requestFour = new calc.ComputeAverageRequest()
+  // requestFour.setNumber(4)  
+
+  // call.write(requestOne)
+  // call.write(requestTwo)
+  // call.write(requestThree)
+  // call.write(requestFour)
+
+  for (var i = 0; i < 1000000; i++){
+      var request = new calc.ComputeAverageRequest()
+      request.setNumber(i)
+      call.write(request) 
+  }
+
+  call.end() // we are done sending messages
+}
+
 function main() {
   //callSum()
-  callPrimeNumberDecomposition()
+  //callPrimeNumberDecomposition()
+  callComputeAverage()
 }
 main()
