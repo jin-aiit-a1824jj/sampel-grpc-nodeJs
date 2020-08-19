@@ -4,6 +4,28 @@
 var grpc = require('grpc');
 var protos_greet_pb = require('../protos/greet_pb.js');
 
+function serialize_greet_ComputeAverageRequest(arg) {
+  if (!(arg instanceof protos_greet_pb.ComputeAverageRequest)) {
+    throw new Error('Expected argument of type greet.ComputeAverageRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_ComputeAverageRequest(buffer_arg) {
+  return protos_greet_pb.ComputeAverageRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greet_ComputeAverageResponse(arg) {
+  if (!(arg instanceof protos_greet_pb.ComputeAverageResponse)) {
+    throw new Error('Expected argument of type greet.ComputeAverageResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_ComputeAverageResponse(buffer_arg) {
+  return protos_greet_pb.ComputeAverageResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greet_GreetManyTimesRequest(arg) {
   if (!(arg instanceof protos_greet_pb.GreetManyTimesRequest)) {
     throw new Error('Expected argument of type greet.GreetManyTimesRequest');
@@ -175,6 +197,18 @@ longGreet: {
     requestDeserialize: deserialize_greet_LongGreetRequest,
     responseSerialize: serialize_greet_LongGreetResponse,
     responseDeserialize: deserialize_greet_LongGreetResponse,
+  },
+  // Client streaming API - exercise
+computeAverage: {
+    path: '/greet.GreetService/ComputeAverage',
+    requestStream: true,
+    responseStream: false,
+    requestType: protos_greet_pb.ComputeAverageRequest,
+    responseType: protos_greet_pb.ComputeAverageResponse,
+    requestSerialize: serialize_greet_ComputeAverageRequest,
+    requestDeserialize: deserialize_greet_ComputeAverageRequest,
+    responseSerialize: serialize_greet_ComputeAverageResponse,
+    responseDeserialize: deserialize_greet_ComputeAverageResponse,
   },
 };
 

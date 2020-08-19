@@ -86,6 +86,32 @@ function longGreet(call, callback) {
   })
 }
 
+function computeAverage(call, callback) {
+  console.log("Hello From server - computeAverage")
+
+  var list = []
+  var counter = 0;
+  call.on('data', request => {
+    const number = request.getNumber();
+    console.log(counter++ + "->" + number)
+    list.push(number)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', ()=>{
+    var response = new greets.ComputeAverageResponse()
+    const result = list.reduce(function(prev, current, index, array){
+      return prev + current
+    })/list.length;
+
+    response.setResult(result)
+    callback(null, response)
+  })
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
@@ -95,6 +121,7 @@ function main() {
       greetManyTimes:greetManyTimes,
       primeNumber:primeNumber,
       longGreet:longGreet,
+      computeAverage:computeAverage,
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())

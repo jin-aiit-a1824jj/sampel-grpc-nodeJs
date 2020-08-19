@@ -173,11 +173,50 @@ function callLongGreeting() {
 
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function callcallLongGreetingExercise() {
+  console.log("Hello From Client - callcallLongGreetingExercise")
+
+  // Create our server client
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var request = new greets.ComputeAverageRequest()
+  
+  var call = client.computeAverage(request, (error, response) => {
+    if(!error){
+        console.log('Server Response: ', response.getResult())
+    }else {
+        console.error(error)
+    }
+  })
+
+  let numbers = [];//[1, 2, 3, 4]
+  for (var i = 0; i < 4; i++){
+    numbers.push(getRandomInt(0, 100))
+  }
+  numbers.forEach(function(item, _, _) {
+    var request = new greets.ComputeAverageRequest()
+    request.setNumber(item)
+    call.write(request)
+  })
+  call.end()
+  
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
   //callGreetManyTime()
   //callGreetManyTimeExercise()
-  callLongGreeting()
+  //callLongGreeting()
+  callcallLongGreetingExercise()
 }
 main()
