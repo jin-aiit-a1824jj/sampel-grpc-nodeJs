@@ -84,9 +84,95 @@ function callGreetManyTime() {
 
 }
 
+function callGreetManyTimeExercise() {
+  // create request & set the Greeting
+  var request = {
+    number: 120
+  }
+  
+  var call = client.primeNumber(request, () => {})
+  
+  call.on('data', (response) => {
+    console.log('Client Streaming Response: ', response.result)
+  })
+
+  call.on('status', (status)=> {
+    console.log("status:->");
+    console.log(status);
+    console.log(status.details);
+  })
+
+  call.on('error', (error) => {
+    console.log("error:->");
+    console.error(error);
+    console.error(error.details);
+  })
+
+  call.on('end', () => {
+    console.log('Streaming Ended!')
+  })
+}
+
+function callLongGreeting(){
+
+  var request = {
+    greet: {
+      first_name: "Jerry",
+      last_name: "Tom"
+    }
+  }
+
+  var call = client.longGreet(request, (error, response) => {
+    if(!error){
+      console.log('Server Response: ', response.result)
+    }else {
+      console.error(error)
+    }
+  })
+
+  let count = 0, intervalID = setInterval(function(){
+    
+    console.log('Sending message ' + count)
+
+    call.write(request)
+    if(++count > 3){
+      clearInterval(intervalID)
+      call.end() // we have sent all the message
+    }
+  }, 1000)
+}
+
+function callLongGreetingExercise(){
+
+  var request = {
+    number: 0,
+  }
+  
+  var call = client.computeAverage(request, (error, response) => {
+    if(!error){
+        console.log('Server Response: ', response.result)
+    }else {
+        console.error(error)
+    }
+  })
+
+  let numbers = [1, 2, 3, 4]
+  numbers.forEach(function(item, _, _) {
+    var request = {
+      number: item,
+    }
+    call.write(request)
+  })
+  call.end()
+
+}
+
 function main() {
   //callGreetings();
   //callGreetingExercise()
-  callGreetManyTime()
+  //callGreetManyTime()
+  //callGreetManyTimeExercise()
+  //callLongGreeting()
+  callLongGreetingExercise()
 }
 main()

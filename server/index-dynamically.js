@@ -41,12 +41,77 @@ function greetManyTimes(call, callback) {
   }, 500)
 }
 
+function primeNumber(call, callback){
+  var number = call.request.number;
+  var k = 2
+
+  while(number > 1){
+    if (number % k == 0){
+      
+      var primeNumberResponse = { result: k }
+      call.write(primeNumberResponse)
+
+      number /= k
+    } else {
+      k += 1
+    }
+  }
+
+  call.end()
+}
+
+function longGreet(call, callback) {
+ call.on('data', request => {
+    var fullName = request.greet.first_name + " " + request.greet.last_name
+    console.log(fullName)
+ })
+
+ call.on('error', error => {
+   console.error(error)
+ })
+
+ call.on('end', ()=>{
+   var response = { "result" : 'Long Greet Client Streaming......'}
+   callback(null, response)
+ })
+}
+
+function computeAverage(call, callback) {
+
+  var list = []
+
+  call.on('data', request => {
+    list.push(request.number)
+    console.log(list.length + "->" + request.number)
+ })
+
+ call.on('error', error => {
+   console.error(error)
+ })
+
+ call.on('end', ()=>{
+   
+   const result = list.reduce(function(prev, current, index, array){
+     return prev + current
+   })/list.length;
+
+   var response = {
+     "result" : result
+   }
+   callback(null, response)
+ })
+
+}
+
 function main(){
   const server = new grpc.Server()
   server.addService(greetPackageDefinition.GreetService.service, {
     greet: greet,
     sum:sum,
     greetManyTimes:greetManyTimes,
+    primeNumber:primeNumber,
+    longGreet:longGreet,
+    computeAverage:computeAverage,
 
   })
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
