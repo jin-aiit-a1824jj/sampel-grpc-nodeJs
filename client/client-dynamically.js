@@ -167,12 +167,95 @@ function callLongGreetingExercise(){
 
 }
 
+async function sleep(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), interval)
+  })
+}
+
+async function callBiDirect() {
+
+  var request = {
+    greet: {
+      first_name: "Stephane",
+      last_name: "Maarke"
+    }
+  }
+
+  var call = client.greetEveryone(request, (error, response) => {
+    if(!error){
+        console.log('Server Response: ', response.result)
+    }else {
+        console.error(error)
+    }
+  })
+
+  call.on('data', response => {
+    console.log('Hello Client! '+ response.result)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Client The End')
+  })
+
+  for(var i = 0; i < 10; i++) {
+    call.write(request)
+    await sleep(1000)
+  }
+
+  call.end()
+
+}
+
+async function callBiDirectExercise() {
+  var request = {
+    number: 0
+  }
+
+  var call = client.findMaximum(request, (error, response) => {
+    if(!error){
+        console.log('Server Response: ', response.result)
+    }else {
+        console.error(error)
+    }
+  })
+
+  call.on('data', response => {
+    console.log('FindMaximum => '+ response.result)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Client The End')
+  })
+
+  let array = [1,5,3,6,2,20]
+  for(var i = 0; i < array.length; i++){
+    request.number = array[i];
+    console.log('Sending number: ' + array[i])
+    call.write(request)
+    await sleep(1000)
+  }
+
+  call.end()
+
+}
+
 function main() {
   //callGreetings();
   //callGreetingExercise()
   //callGreetManyTime()
   //callGreetManyTimeExercise()
   //callLongGreeting()
-  callLongGreetingExercise()
+  //callLongGreetingExercise()
+  //callBiDirect()
+  callBiDirectExercise()
 }
 main()

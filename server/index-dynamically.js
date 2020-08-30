@@ -103,6 +103,62 @@ function computeAverage(call, callback) {
 
 }
 
+async function sleep(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), interval)
+  })
+}
+
+async function greetEveryone(call, callback) {
+  call.on('data', request => {
+    var fullName = request.greet.first_name  + ' ' + request.greet.last_name
+    console. log('Hello ' + fullName)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Server The End...')
+  })
+
+  for (var i = 0; i < 10; i++){
+    var response = { result: 'Paulo Dichone' }
+    call.write(response)
+    await sleep(1000)
+  }
+
+  call.end()
+}
+
+async function findMaximum(call, callback) {
+
+  var maxNumber = 0;
+
+  call.on('data', response => {
+    var requestNumber = response.number
+    console.log('Request number: ' + requestNumber)
+
+    if(requestNumber > maxNumber){
+      maxNumber = requestNumber;
+
+      var request = { result: maxNumber }
+      call.write(request)
+    }
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Server The End...')
+    call.end()
+  })
+
+}
+
 function main(){
   const server = new grpc.Server()
   server.addService(greetPackageDefinition.GreetService.service, {
@@ -112,6 +168,8 @@ function main(){
     primeNumber:primeNumber,
     longGreet:longGreet,
     computeAverage:computeAverage,
+    greetEveryone:greetEveryone,
+    findMaximum:findMaximum,
 
   })
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
