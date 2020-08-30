@@ -66,6 +66,43 @@ function computeAverage(call, callback) {
   })
 }
 
+function findMaximum(call, callback) {
+  var currentMaximum = 0
+  var currentNumber = 0
+
+  call.on('data', request => {
+    currentNumber = request.getNumber()
+    if(currentNumber > currentMaximum) {
+      currentMaximum = currentNumber
+
+      var response = new calc.FindMaximumResponse()
+      response.setMaximum(currentMaximum)
+
+      call.write(response)
+
+    }else{
+      //do nothing
+    }
+    
+    console.log('Streamed number: ', request.getNumber());
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+
+    var response = new calc.FindMaximumResponse()
+    response.setMaximum(currentMaximum)
+
+    call.write(response)
+    call.end()
+    
+    console.log('The end!')
+  })
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(calcService.CalculatorServiceService,
@@ -73,6 +110,7 @@ function main() {
        sum: sum,
        primeNumberDecomposition: primeNumberDecomposition,
        computeAverage: computeAverage,
+       findMaximum: findMaximum
       }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
