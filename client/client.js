@@ -179,7 +179,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-function callcallLongGreetingExercise() {
+function callLongGreetingExercise() {
   console.log("Hello From Client - callcallLongGreetingExercise")
 
   // Create our server client
@@ -211,12 +211,58 @@ function callcallLongGreetingExercise() {
   
 }
 
+async function sleep(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), interval)
+  })
+}
+
+async function callBiDirect() {
+  console.log("Hello From Client - callBiDirect")
+
+  // Create our server client
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var call = client.greetEveryone(request, (error, response) => {
+    console.log('Server Response: ' + response)
+  })
+
+  call.on('data', response => {
+    console.log('Hello Client! '+ response.getResult())
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Client The End')
+  })
+
+  for(var i = 0; i < 10; i++) {
+    var greeting = new greets.Greeting()
+    greeting.setFirstName('Stephane')
+    greeting.setLastName('Maarke')
+
+    var request = new greets.GreetEveryoneRequest()
+    request.setGreet(greeting)
+    call.write(request)
+    await sleep(1000)
+  }
+
+  call.end()
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
   //callGreetManyTime()
   //callGreetManyTimeExercise()
   //callLongGreeting()
-  callcallLongGreetingExercise()
+  //callLongGreetingExercise()
+  callBiDirect()
 }
 main()

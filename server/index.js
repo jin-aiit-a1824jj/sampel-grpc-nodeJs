@@ -129,7 +129,7 @@ async function greetEveryone(call, callback) {
   })
 
   call.on('end', () => {
-    console.log('The End...')
+    console.log('Server The End...')
   })
 
   for (var i = 0; i < 10; i++){
@@ -137,13 +137,14 @@ async function greetEveryone(call, callback) {
     greeting.setFirstName('Paulo')
     greeting.setLastName('Dichone')
 
-    var request = new greets.GreetEveryoneRequest()
-    request.setGreet(greeting)
+    var request = new greets.GreetEveryoneResponse()
+    request.setResult(greeting.toString())
 
     call.write(request)
     await sleep(1000)
   }
   
+  call.end()
 }
 
 function main() {
