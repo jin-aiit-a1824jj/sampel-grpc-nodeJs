@@ -26,6 +26,28 @@ function deserialize_greet_ComputeAverageResponse(buffer_arg) {
   return protos_greet_pb.ComputeAverageResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_greet_FindMaximumRequest(arg) {
+  if (!(arg instanceof protos_greet_pb.FindMaximumRequest)) {
+    throw new Error('Expected argument of type greet.FindMaximumRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_FindMaximumRequest(buffer_arg) {
+  return protos_greet_pb.FindMaximumRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greet_FindMaximumResponse(arg) {
+  if (!(arg instanceof protos_greet_pb.FindMaximumResponse)) {
+    throw new Error('Expected argument of type greet.FindMaximumResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_FindMaximumResponse(buffer_arg) {
+  return protos_greet_pb.FindMaximumResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greet_GreetEveryoneRequest(arg) {
   if (!(arg instanceof protos_greet_pb.GreetEveryoneRequest)) {
     throw new Error('Expected argument of type greet.GreetEveryoneRequest');
@@ -243,6 +265,18 @@ greetEveryone: {
     requestDeserialize: deserialize_greet_GreetEveryoneRequest,
     responseSerialize: serialize_greet_GreetEveryoneResponse,
     responseDeserialize: deserialize_greet_GreetEveryoneResponse,
+  },
+  // BiDi Streaming - exercise
+findMaximum: {
+    path: '/greet.GreetService/FindMaximum',
+    requestStream: true,
+    responseStream: true,
+    requestType: protos_greet_pb.FindMaximumRequest,
+    responseType: protos_greet_pb.FindMaximumResponse,
+    requestSerialize: serialize_greet_FindMaximumRequest,
+    requestDeserialize: deserialize_greet_FindMaximumRequest,
+    responseSerialize: serialize_greet_FindMaximumResponse,
+    responseDeserialize: deserialize_greet_FindMaximumResponse,
   },
 };
 

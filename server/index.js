@@ -147,6 +147,34 @@ async function greetEveryone(call, callback) {
   call.end()
 }
 
+async function findMaximum(call, callback) {
+  
+  var maxNumber = 0;
+
+  call.on('data', response => {
+    var requestNumber = response.getNumber()
+    console. log('Request number: ' + requestNumber)
+
+    if(requestNumber > maxNumber)
+      maxNumber = requestNumber;
+
+    var request = new greets.FindMaximumResponse()
+    request.setResult(maxNumber)
+
+    call.write(request)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Server The End...')
+    call.end()
+  })
+
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
@@ -157,7 +185,8 @@ function main() {
       primeNumber:primeNumber,
       longGreet:longGreet,
       computeAverage:computeAverage,
-      greetEveryone:greetEveryone
+      greetEveryone:greetEveryone,
+      findMaximum:findMaximum
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())

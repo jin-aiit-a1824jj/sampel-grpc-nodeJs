@@ -256,6 +256,44 @@ async function callBiDirect() {
   call.end()
 }
 
+async function callBiDirectExercise() {
+  console.log("Hello From Client - callBiDirectExercise")
+
+  // Create our server client
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+
+  var request = new greets.FindMaximumRequest()
+
+  var call = client.findMaximum(request, (error, response) => {
+    console.log('Server Response: ' + response)
+  })
+
+  call.on('data', response => {
+    console.log('FindMaximum => '+ response.getResult())
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('Client The End')
+  })
+
+  let array = [1,5,3,6,2,20]
+  array.forEach(async (item, index, array) => {
+    var request = new greets.FindMaximumRequest()
+    request.setNumber(item)
+    call.write(request)
+    await sleep(1500)
+  })
+
+  call.end()
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
@@ -263,6 +301,7 @@ function main() {
   //callGreetManyTimeExercise()
   //callLongGreeting()
   //callLongGreetingExercise()
-  callBiDirect()
+  //callBiDirect()
+  callBiDirectExercise()
 }
 main()
