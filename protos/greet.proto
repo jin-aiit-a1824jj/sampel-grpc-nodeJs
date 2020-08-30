@@ -56,6 +56,14 @@ message ComputeAverageResponse {
   double result = 1;
 }
 
+message GreetEveryoneRequest {
+  Greeting greet = 1;
+}
+
+message GreetEveryoneResponse {
+  string result = 1;
+}
+
 service GreetService {
   //unary API
   rpc Greet(GreetRequest) returns (GreetResponse) {};
@@ -70,8 +78,11 @@ service GreetService {
   rpc PrimeNumber(PrimeNumberRequest) returns(stream PrimeNumberResponse) {};
 
   //Client Streaming API
-  rpc LongGreet (stream LongGreetRequest) returns (LongGreetResponse);
+  rpc LongGreet (stream LongGreetRequest) returns (LongGreetResponse) {};
   
   //Client streaming API - exercise
-  rpc ComputeAverage (stream ComputeAverageRequest) returns (ComputeAverageResponse);
+  rpc ComputeAverage (stream ComputeAverageRequest) returns (ComputeAverageResponse) {};
+
+  // BiDi Streaming
+  rpc GreetEveryone (stream GreetEveryoneRequest) returns (stream GreetEveryoneResponse) {};
 }
