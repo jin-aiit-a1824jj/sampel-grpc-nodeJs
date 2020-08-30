@@ -112,6 +112,40 @@ function computeAverage(call, callback) {
   })
 }
 
+async function sleep(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), interval)
+  })
+}
+
+async function greetEveryone(call, callback) {
+  call.on('data', response => {
+    var fullName = response.getGreet().getFirstName() + ' ' + response.getGreet().getLastName()
+    console. log('Hello ' + fullName)
+  })
+
+  call.on('error', error => {
+    console.error(error)
+  })
+
+  call.on('end', () => {
+    console.log('The End...')
+  })
+
+  for (var i = 0; i < 10; i++){
+    var greeting = new greets.Greeting()
+    greeting.setFirstName('Paulo')
+    greeting.setLastName('Dichone')
+
+    var request = new greets.GreetEveryoneRequest()
+    request.setGreet(greeting)
+
+    call.write(request)
+    await sleep(1000)
+  }
+  
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
@@ -122,6 +156,7 @@ function main() {
       primeNumber:primeNumber,
       longGreet:longGreet,
       computeAverage:computeAverage,
+      greetEveryone:greetEveryone
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
