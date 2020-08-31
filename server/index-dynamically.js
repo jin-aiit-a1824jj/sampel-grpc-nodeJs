@@ -178,13 +178,13 @@ function squareRoot(call, callback) {
 }
 
 let credentials = grpc.ServerCredentials.createSsl(
-  fs.readFileSync('../certs/ca.crt'),
+  fs.readFileSync(path.join(__dirname, '../certs/ca.crt')),
   [{
-    cert_chain: fs.readFileSync('../certs/server.crt'),
-    private_key:fs.readFileSync('../certs/server.key')
+    cert_chain: fs.readFileSync(path.join(__dirname, '../certs/server.crt')),
+    private_key:fs.readFileSync(path.join(__dirname, '../certs/server.key'))
   }],
   true
-)// nodeの実行位置確認！
+)
 
 let unsafeCred = grpc.credentials.createInsecure()
 

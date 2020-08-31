@@ -2,13 +2,13 @@ var greets = require('../server/protos/greet_pb')
 var service = require('../server/protos/greet_grpc_pb')
 
 const fs = require('fs')
-
+const path = require('path')
 var grpc = require('grpc')
 
 let credentials = grpc.credentials.createSsl(
-  fs.readFileSync('../certs/ca.crt'),
-  fs.readFileSync('../certs/client.key'),
-  fs.readFileSync('../certs/client.crt')
+  fs.readFileSync(path.join(__dirname, '../certs/ca.crt')),
+  fs.readFileSync(path.join(__dirname, '../certs/client.key')),
+  fs.readFileSync(path.join(__dirname, '../certs/client.crt'))
 )
 
 let unsafeCred = grpc.credentials.createInsecure()

@@ -19,9 +19,9 @@ const client = new greetPackageDefinition.GreetService("127.0.0.1:5000", grpc.cr
 
 const client_SSL = new greetPackageDefinition.GreetService("localhost:5000", 
   grpc.credentials.createSsl(
-    fs.readFileSync('../certs/ca.crt'),
-    fs.readFileSync('../certs/client.key'),
-    fs.readFileSync('../certs/client.crt')
+    fs.readFileSync(path.join(__dirname, '../certs/ca.crt')),
+    fs.readFileSync(path.join(__dirname, '../certs/client.key')),
+    fs.readFileSync(path.join(__dirname, '../certs/client.crt'))
   )
 )
 

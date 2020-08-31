@@ -2,7 +2,7 @@ var greets = require('../server/protos/greet_pb')
 var service = require('../server/protos/greet_grpc_pb')
 
 const fs = require('fs')
-
+const path = require('path')
 var grpc = require('grpc')
 
 /*
@@ -199,10 +199,10 @@ function squareRoot(call, callback) {
 function main() {
 
   let credentials = grpc.ServerCredentials.createSsl(
-    fs.readFileSync('../certs/ca.crt'),
+    fs.readFileSync(path.join(__dirname, '../certs/ca.crt')),
     [{
-      cert_chain: fs.readFileSync('../certs/server.crt'),
-      private_key:fs.readFileSync('../certs/server.key')
+      cert_chain: fs.readFileSync(path.join(__dirname, '../certs/server.crt')),
+      private_key:fs.readFileSync(path.join(__dirname, '../certs/server.key'))
     }],
     true
   )
