@@ -35,3 +35,6 @@ npm install grpc
 npm install @grpc/proto-loader
 
 https://grpc.io/docs/guides/error/
+
+https://grpc.io/blog/deadlines/
+https://grpc.github.io/grpc/node/grpc.Client.html#~CallOptions__anchor

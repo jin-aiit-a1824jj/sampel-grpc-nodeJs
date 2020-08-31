@@ -318,6 +318,50 @@ function doErrorCall() {
 
 }
 
+function getRPCDeadLine(rpcType) {
+  var timeAllowed = 5000
+
+  switch(rpcType){
+    case 1:
+      timeAllowed = 10//1000
+      break
+    
+    case 2:
+      timeAllowed = 7000
+      break
+    
+    default :
+      console.log('Invalid RPC Type: Using Default Timeout')
+  }
+
+  return new Date(Date.now() + timeAllowed)
+}
+
+function doErrorCall_deadline() {
+  console.log("Hello From Client - doErrorCall_deadline")
+
+  var deadline = getRPCDeadLine(1)
+
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+ 
+  var number = -1// * -25
+  var squareRootRequest = new greets.SquareRootRequest()
+  squareRootRequest.setNumber(number)
+
+  client.squareRoot(squareRootRequest, { deadline: deadline }, (error, response) => {
+    if(!error){
+      console.log('Square root is ', response.getNumberRoot())
+    } else {
+      //console.error(error)
+      console.log(error.code)
+      console.log(error.message)
+    }
+  })
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
@@ -327,6 +371,7 @@ function main() {
   //callLongGreetingExercise()
   //callBiDirect()
   //callBiDirectExercise()
-  doErrorCall()
+  //doErrorCall()
+  doErrorCall_deadline() 
 }
 main()
