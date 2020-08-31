@@ -41,3 +41,14 @@ https://grpc.github.io/grpc/node/grpc.Client.html#~CallOptions__anchor
 
 https://github.com/gbahamondezc/node-grpc-ssl
 https://grpc.io/docs/guides/auth/
+
+postgresqlの設定::https://qiita.com/sibakenY/items/407b721ad1bd0975bd00
+誰でも分かる！PostgreSQLでDB構築！::https://qiita.com/hiroyuki_mrp/items/10322eeb29bb8e35987f
+
+npm install pg
+npm install knex
+
+../node_modules/.bin/knex migrate:make blogs
+../node_modules/.bin/knex migrate:latest
+../node_modules/.bin/knex seed:make blogs
+../node_modules/.bin/knex seed:run
