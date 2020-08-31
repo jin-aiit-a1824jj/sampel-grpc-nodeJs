@@ -1,6 +1,8 @@
 var greets = require('../server/protos/greet_pb')
 var service = require('../server/protos/greet_grpc_pb')
 
+const fs = require('fs')
+
 var grpc = require('grpc')
 
 /*
@@ -195,6 +197,18 @@ function squareRoot(call, callback) {
 }
 
 function main() {
+
+  let credentials = grpc.ServerCredentials.createSsl(
+    fs.readFileSync('../certs/ca.crt'),
+    [{
+      cert_chain: fs.readFileSync('../certs/server.crt'),
+      private_key:fs.readFileSync('../certs/server.key')
+    }],
+    true
+  )
+
+  let unsafeCred = grpc.ServerCredentials.createInsecure()
+
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
     {
@@ -209,7 +223,7 @@ function main() {
       squareRoot:squareRoot
     }
   )
-  server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
+  server.bind("0.0.0.0:5000", credentials)
   server.start()
 
   console.log('Server running on port 0.0.0.0:5000')

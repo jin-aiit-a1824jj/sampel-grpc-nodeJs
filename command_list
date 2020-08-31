@@ -38,3 +38,6 @@ https://grpc.io/docs/guides/error/
 
 https://grpc.io/blog/deadlines/
 https://grpc.github.io/grpc/node/grpc.Client.html#~CallOptions__anchor
+
+https://github.com/gbahamondezc/node-grpc-ssl
+https://grpc.io/docs/guides/auth/

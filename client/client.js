@@ -1,7 +1,17 @@
 var greets = require('../server/protos/greet_pb')
 var service = require('../server/protos/greet_grpc_pb')
 
+const fs = require('fs')
+
 var grpc = require('grpc')
+
+let credentials = grpc.credentials.createSsl(
+  fs.readFileSync('../certs/ca.crt'),
+  fs.readFileSync('../certs/client.key'),
+  fs.readFileSync('../certs/client.crt')
+)
+
+let unsafeCred = grpc.credentials.createInsecure()
 
 function callGreeting() {
   console.log("Hello From Client - callGreeting")
@@ -362,6 +372,35 @@ function doErrorCall_deadline() {
   })
 }
 
+function callGreeting_SSL() {
+  console.log("Hello From Client - callGreeting")
+
+  var client = new service.GreetServiceClient(
+    'localhost:5000',
+    credentials
+  )
+  
+  // create our request
+  var request = new greets.GreetRequest()
+  
+  // created a protocol buffer greeting message
+  var greeting = new greets.Greeting()
+  greeting.setFirstName("Jerry")
+  greeting.setLastName("Tom")
+
+  // set the Greeting
+  request.setGreeting(greeting)
+
+  client.greet(request, (error, response)=> {
+    if(!error){
+      console.log("Greeting Response: ", response.getResult() )
+    } else {
+      console.error(error)
+    }
+  })
+}
+
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
@@ -372,6 +411,7 @@ function main() {
   //callBiDirect()
   //callBiDirectExercise()
   //doErrorCall()
-  doErrorCall_deadline() 
+  //doErrorCall_deadline()
+  callGreeting_SSL() 
 }
 main()
