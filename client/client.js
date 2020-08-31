@@ -294,6 +294,30 @@ async function callBiDirectExercise() {
   call.end()
 }
 
+function doErrorCall() {
+  console.log("Hello From Client - doErrorCall")
+
+  var client = new service.GreetServiceClient(
+    '127.0.0.1:5000',
+    grpc.credentials.createInsecure()
+  )
+ 
+  var number = -1// * -25
+  var squareRootRequest = new greets.SquareRootRequest()
+  squareRootRequest.setNumber(number)
+
+  client.squareRoot(squareRootRequest, (error, response) => {
+    if(!error){
+      console.log('Square root is ', response.getNumberRoot())
+    } else {
+      //console.error(error)
+      console.log(error.code)
+      console.log(error.message)
+    }
+  })
+
+}
+
 function main() {
   //callGreeting()
   //callGreetingExercise()
@@ -302,6 +326,7 @@ function main() {
   //callLongGreeting()
   //callLongGreetingExercise()
   //callBiDirect()
-  callBiDirectExercise()
+  //callBiDirectExercise()
+  doErrorCall()
 }
 main()

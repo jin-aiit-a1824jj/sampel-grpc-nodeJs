@@ -33,3 +33,5 @@ npm init
 npm install grpc
 //npm install proto-loader
 npm install @grpc/proto-loader
+
+https://grpc.io/docs/guides/error/

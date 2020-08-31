@@ -175,6 +175,25 @@ async function findMaximum(call, callback) {
 
 }
 
+function squareRoot(call, callback) {
+  var number = call.request.getNumber()
+
+  if (number >= 0){
+    var numberRoot = Math.sqrt(number)
+    var response = new greets.SquareRootResponse()
+    response.setNumberRoot(numberRoot)
+
+    callback(null, response)
+  } else {
+    // Error handling
+    return callback({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: 'The number being sent is not positive ' + 'Number sent: ' + number
+    })
+  }
+
+}
+
 function main() {
   var server = new grpc.Server()
   server.addService(service.GreetServiceService, 
@@ -186,7 +205,8 @@ function main() {
       longGreet:longGreet,
       computeAverage:computeAverage,
       greetEveryone:greetEveryone,
-      findMaximum:findMaximum
+      findMaximum:findMaximum,
+      squareRoot:squareRoot
     }
   )
   server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())

@@ -158,6 +158,28 @@ function deserialize_greet_PrimeNumberResponse(buffer_arg) {
   return protos_greet_pb.PrimeNumberResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_greet_SquareRootRequest(arg) {
+  if (!(arg instanceof protos_greet_pb.SquareRootRequest)) {
+    throw new Error('Expected argument of type greet.SquareRootRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_SquareRootRequest(buffer_arg) {
+  return protos_greet_pb.SquareRootRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greet_SquareRootResponse(arg) {
+  if (!(arg instanceof protos_greet_pb.SquareRootResponse)) {
+    throw new Error('Expected argument of type greet.SquareRootResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greet_SquareRootResponse(buffer_arg) {
+  return protos_greet_pb.SquareRootResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greet_SumRequest(arg) {
   if (!(arg instanceof protos_greet_pb.SumRequest)) {
     throw new Error('Expected argument of type greet.SumRequest');
@@ -277,6 +299,19 @@ findMaximum: {
     requestDeserialize: deserialize_greet_FindMaximumRequest,
     responseSerialize: serialize_greet_FindMaximumResponse,
     responseDeserialize: deserialize_greet_FindMaximumResponse,
+  },
+  // error handling
+// this RPC will throw an exception if the sent number is nagative: -1
+squareRoot: {
+    path: '/greet.GreetService/SquareRoot',
+    requestStream: false,
+    responseStream: false,
+    requestType: protos_greet_pb.SquareRootRequest,
+    responseType: protos_greet_pb.SquareRootResponse,
+    requestSerialize: serialize_greet_SquareRootRequest,
+    requestDeserialize: deserialize_greet_SquareRootRequest,
+    responseSerialize: serialize_greet_SquareRootResponse,
+    responseDeserialize: deserialize_greet_SquareRootResponse,
   },
 };
 
