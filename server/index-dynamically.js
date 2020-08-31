@@ -1,7 +1,7 @@
 const path = require('path')
 const protoLoader = require('@grpc/proto-loader')
 const grpc = require('grpc')
-
+const fs = require('fs')
 //grpc service definition for greet
 
 const greetProtoPath = path.join(__dirname, "..", "protos", "greet.proto")
@@ -159,6 +159,35 @@ async function findMaximum(call, callback) {
 
 }
 
+function squareRoot(call, callback) {
+  var number = call.request.number
+
+  if (number >= 0){
+    var numberRoot = Math.sqrt(number)
+    var response = {number_root: numberRoot}
+  
+    callback(null, response)
+  } else {
+    // Error handling
+    return callback({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: 'The number being sent is not positive ' + 'Number sent: ' + number
+    })
+  }
+
+}
+
+let credentials = grpc.ServerCredentials.createSsl(
+  fs.readFileSync('../certs/ca.crt'),
+  [{
+    cert_chain: fs.readFileSync('../certs/server.crt'),
+    private_key:fs.readFileSync('../certs/server.key')
+  }],
+  true
+)// nodeの実行位置確認！
+
+let unsafeCred = grpc.credentials.createInsecure()
+
 function main(){
   const server = new grpc.Server()
   server.addService(greetPackageDefinition.GreetService.service, {
@@ -170,9 +199,10 @@ function main(){
     computeAverage:computeAverage,
     greetEveryone:greetEveryone,
     findMaximum:findMaximum,
+    squareRoot:squareRoot
 
   })
-  server.bind("0.0.0.0:5000", grpc.ServerCredentials.createInsecure())
+  server.bind("0.0.0.0:5000", credentials)
   server.start()
   console.log("Server Running at http://127.0.0.1:5000")
 }

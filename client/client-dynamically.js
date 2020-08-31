@@ -1,7 +1,7 @@
 const path = require('path')
 const protoLoader = require('@grpc/proto-loader')
 const grpc = require('grpc');
-
+const fs = require('fs')
 //grpc service definition for greet
 
 const greetProtoPath = path.join(__dirname, "..", "protos", "greet.proto")
@@ -16,6 +16,14 @@ const greetProtoDefinition = protoLoader.loadSync(greetProtoPath, {
 const greetPackageDefinition = grpc.loadPackageDefinition(greetProtoDefinition).greet
 
 const client = new greetPackageDefinition.GreetService("127.0.0.1:5000", grpc.credentials.createInsecure())
+
+const client_SSL = new greetPackageDefinition.GreetService("localhost:5000", 
+  grpc.credentials.createSsl(
+    fs.readFileSync('../certs/ca.crt'),
+    fs.readFileSync('../certs/client.key'),
+    fs.readFileSync('../certs/client.crt')
+  )
+)
 
 function callGreetings() {
 
@@ -248,6 +256,82 @@ async function callBiDirectExercise() {
 
 }
 
+function doErrorCall() {
+  console.log("Hello From Client - doErrorCall")
+ 
+  var number = -1// * -25
+  var squareRootRequest = {number: number}
+
+  client.squareRoot(squareRootRequest, (error, response) => {
+    if(!error){
+      console.log('Square root is ', response.number_root)
+    } else {
+      //console.error(error)
+      console.log(error.code)
+      console.log(error.message)
+    }
+  })
+
+}
+
+function getRPCDeadLine(rpcType) {
+  var timeAllowed = 5000
+
+  switch(rpcType){
+    case 1:
+      timeAllowed = 10//1000
+      break
+    
+    case 2:
+      timeAllowed = 7000
+      break
+    
+    default :
+      console.log('Invalid RPC Type: Using Default Timeout')
+  }
+
+  return new Date(Date.now() + timeAllowed)
+}
+
+function doErrorCall_deadline() {
+  console.log("Hello From Client - doErrorCall_deadline")
+ 
+  var deadline = {deadline: getRPCDeadLine(1)}
+
+  var number = -1// * -25
+  var squareRootRequest = {number: number}
+
+  client.squareRoot(squareRootRequest, deadline, (error, response) => {
+    if(!error){
+      console.log('Square root is ', response.number_root)
+    } else {
+      //console.error(error)
+      console.log(error.code)
+      console.log(error.message)
+    }
+  })
+
+}
+
+function callGreeting_SSL() {
+  console.log("Hello From Client - callGreeting_SSL")
+
+  var request = {
+    greeting: {
+      first_name: "Jerry",
+      second_name: "Tom"
+    }
+  }
+
+  client_SSL.greet(request, (error, response) => {
+    if(!error) {
+      console.log("Greeting Response: ", response.result);
+    }else {
+      console.error(error)
+    }
+  })
+}
+
 function main() {
   //callGreetings();
   //callGreetingExercise()
@@ -256,6 +340,9 @@ function main() {
   //callLongGreeting()
   //callLongGreetingExercise()
   //callBiDirect()
-  callBiDirectExercise()
+  //callBiDirectExercise()
+  //doErrorCall()
+  //doErrorCall_deadline()
+  callGreeting_SSL() // nodeの実行位置確認！
 }
 main()
