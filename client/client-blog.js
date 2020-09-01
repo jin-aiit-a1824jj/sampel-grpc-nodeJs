@@ -24,8 +24,27 @@ function callListBlogs() {
 
 }
 
+function callCreateBlog() {
+    var blog = new blogs.Blog()
+    blog.setAuthor("Johna")
+    blog.setTitle("First blog post")
+    blog.setContent("This is great....")
+    
+    var blogRequest = new blogs.CreateBlogRequest()
+    blogRequest.setBlog(blog)
+
+    client.createBlog(blogRequest, (error, response) => {
+        if(!error){
+            console.log('Received create blog response,', response.toString())
+        }else {
+            console.error(error)
+        }
+    })
+}
+
 function main() {
-    callListBlogs()
+    //callListBlogs()
+    callCreateBlog()
 }
 
 main()

@@ -44,12 +44,12 @@ function createBlog(call, callback) {
     author: blog.getAuthor(),
     title:blog.getTitle(),
     content: blog.getContent()
-  }).then(() => {
-    var id = blog.getId()
+  }, 'id').then((resolve) => {
+    //var id = blog.getId()
     var addedBlog = new blogs.Blog()
 
     //set the blog response to be returned
-    addedBlog.setId(id)
+    addedBlog.setId(String(resolve))
     addedBlog.setAuthor(blog.getAuthor())
     addedBlog.setTitle(blog.getTitle())
     addedBlog.setContent(blog.getContent())
@@ -57,7 +57,7 @@ function createBlog(call, callback) {
     var blogResponse = new blogs.CreateBlogResponse()
     blogResponse.setBlog(addedBlog)
     
-    console.log('Inserted Blog with ID: ', blogResponse.getId())
+    console.log('Inserted Blog with ID: ', blogResponse)
     callback(null, blogResponse)
   })
   
