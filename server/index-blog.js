@@ -103,6 +103,44 @@ function readBlog(call, callback) {
 
 }
 
+function updateBlog(call, callback) {
+  console.log('Received Update blog request')
+
+  var blogId = call.request.getBlog().getId()
+
+  console.log("Searching for a blog to update")
+
+  knex("blogs")
+  .where({ id: parseInt(blogId)})
+  .update({
+    author: call.request.getBlog().getAuthor(),
+    title: call.request.getBlog().getTitle(),
+    content: call.request.getBlog().getContent(),
+  })
+  .returning()
+  .then(data => {
+    if(data) {
+      var blog = new blogs.Blog()
+      console.log("Blog found sending message...")
+
+      //set the blog response
+      blog.setId(blogId)
+      blog.setAuthor(data.author)
+      blog.setTitle(data.title)
+      blog.setContent(data.content)
+
+      var updateBlogResponse = new blogs.UpdateBlogResponse()
+      updateBlogResponse.setBlog(blog)
+
+      console.log("Updated ===", updateBlogResponse.getBlog().getId())
+
+      callback(null, updateBlogResponse)
+    }
+  })
+
+
+}
+
 function main() {
 
     let unsafeCred = grpc.ServerCredentials.createInsecure()
@@ -112,7 +150,8 @@ function main() {
       {
         listBlog:listBlog,
         createBlog:createBlog,
-        readBlog:readBlog
+        readBlog:readBlog,
+        updateBlog:updateBlog
       }
     )
     server.bind("0.0.0.0:5000", unsafeCred)
