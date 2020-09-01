@@ -152,7 +152,7 @@ function updateBlog(call, callback) {
 function deleteBlog(call, callback) {
   console.log('Received Delete blog request')
 
-  var blogId = call.request.getBlog().getId()
+  var blogId = call.request.getBlogId()
 
   knex("blogs")
   .where({ id: parseInt(blogId)})
@@ -162,7 +162,7 @@ function deleteBlog(call, callback) {
     console.log("Blog deleting .... ")
 
     if(data) {
-      var deleteResponse = new blogs.DeleteResponse()
+      var deleteResponse = new blogs.DeleteBlogResponse()
       deleteResponse.setBlogId(blogId)
 
       console.log("Blog request is now deleted with id: ", deleteResponse.toString())

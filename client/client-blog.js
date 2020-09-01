@@ -90,11 +90,34 @@ function callUpdateBlog() {
     })
 }
 
+function callDeleteBlog() {
+
+    var deleteBlogRequest = new blogs.DeleteBlogRequest()
+    var blogId = "6"
+
+    deleteBlogRequest.setBlogId(blogId)
+
+    client.deleteBlog(deleteBlogRequest, (error, response) => {
+        if(!error) {
+            console.log("Deleted blog with id: ", response.toString())
+        }else {
+            if(error.code === grpc.status.NOT_FOUND){
+                console.log("Not found")
+            }else {
+                //do someting else
+                console.error(error)
+            }
+        }
+    })
+
+}
+
 function main() {
     //callListBlogs()
     //callCreateBlog()
     //callReadBlog()
-    callUpdateBlog()
+    //callUpdateBlog()
+    callDeleteBlog()
 }
 
 main()
