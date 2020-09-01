@@ -52,3 +52,8 @@ npm install knex
 ../node_modules/.bin/knex migrate:latest
 ../node_modules/.bin/knex seed:make blogs
 ../node_modules/.bin/knex seed:run
+
+protoc -I=. ./protos/blog.proto \
+  --js_out=import_style=commonjs,binary:./server \
+  --grpc_out=./server \
+  --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin`
