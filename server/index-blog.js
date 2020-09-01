@@ -135,6 +135,14 @@ function updateBlog(call, callback) {
       console.log("Updated ===", updateBlogResponse.getBlog().getId())
 
       callback(null, updateBlogResponse)
+    } else {
+
+      console.log("Blog not found")
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        message: "Blog not Found!"
+      })
+
     }
   })
 

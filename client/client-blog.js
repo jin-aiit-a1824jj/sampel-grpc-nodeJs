@@ -62,10 +62,39 @@ function callReadBlog() {
     })
 }
 
+function callUpdateBlog() {
+
+    var updateBlogRequest = new blogs.UpdateBlogRequest()
+    
+    var newBlog = new blogs.Blog()
+    newBlog.setId("2")
+    newBlog.setAuthor("Gary")
+    newBlog.setTitle("Hello World")
+    newBlog.setContent("This is great, again!")
+
+    updateBlogRequest.setBlog(newBlog)
+
+    console.log("Blog...", newBlog.toString())
+
+    client.updateBlog(updateBlogRequest, (error, response) => {
+        if(!error) {
+            console.log("Found a blog ", response.toString())
+        }else {
+            if(error.code === grpc.status.NOT_FOUND){
+                console.log("Not found")
+            }else {
+                //do someting else
+                console.error(error)
+            }
+        }
+    })
+}
+
 function main() {
     //callListBlogs()
     //callCreateBlog()
-    callReadBlog()
+    //callReadBlog()
+    callUpdateBlog()
 }
 
 main()
