@@ -23,14 +23,15 @@ function listBlog(call, callback) {
             blog.setTitle(element.title)
             blog.setContent(element.content)
 
-            var blogResponse = new blogs.ListBlogResoponse()
+            var blogResponse = new blogs.ListBlogResponse()
             blogResponse.setBlog(blog)
 
             //write to the stream
             call.write(blogResponse)
         })
+        call.end()
     })
-    call.end()
+    
 }
 
 function main() {

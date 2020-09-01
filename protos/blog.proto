@@ -4,7 +4,7 @@ package blog;
 
 service BlogService {
     // All our API's
-    rpc ListBlog (ListBlogRequest) returns (ListBlogResponse);
+    rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse);
 }
 
 message Blog {

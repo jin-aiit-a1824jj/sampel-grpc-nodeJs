@@ -32,7 +32,7 @@ var BlogServiceService = exports.BlogServiceService = {
 listBlog: {
     path: '/blog.BlogService/ListBlog',
     requestStream: false,
-    responseStream: false,
+    responseStream: true,
     requestType: protos_blog_pb.ListBlogRequest,
     responseType: protos_blog_pb.ListBlogResponse,
     requestSerialize: serialize_blog_ListBlogRequest,
