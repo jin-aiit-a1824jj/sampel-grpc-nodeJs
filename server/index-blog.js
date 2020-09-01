@@ -149,6 +149,36 @@ function updateBlog(call, callback) {
 
 }
 
+function deleteBlog(call, callback) {
+  console.log('Received Delete blog request')
+
+  var blogId = call.request.getBlog().getId()
+
+  knex("blogs")
+  .where({ id: parseInt(blogId)})
+  .delete()
+  .returning()
+  .then(data => {
+    console.log("Blog deleting .... ")
+
+    if(data) {
+      var deleteResponse = new blogs.DeleteResponse()
+      deleteResponse.setBlogId(blogId)
+
+      console.log("Blog request is now deleted with id: ", deleteResponse.toString())
+      callback(null, deleteResponse)
+    }else {
+      console.log("Nope....")
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        message: "Blog with the corresponding id was not found!"
+      })
+    }
+
+  })
+  
+}
+
 function main() {
 
     let unsafeCred = grpc.ServerCredentials.createInsecure()
@@ -159,7 +189,8 @@ function main() {
         listBlog:listBlog,
         createBlog:createBlog,
         readBlog:readBlog,
-        updateBlog:updateBlog
+        updateBlog:updateBlog,
+        deleteBlog:deleteBlog
       }
     )
     server.bind("0.0.0.0:5000", unsafeCred)
