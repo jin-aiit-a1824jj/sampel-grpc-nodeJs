@@ -42,9 +42,30 @@ function callCreateBlog() {
     })
 }
 
+function callReadBlog() {
+    var readBlogRequest = new blogs.ReadBlogRequest()
+    //readBlogRequest.setBlogId('1')
+
+    readBlogRequest.setBlogId('100')
+
+    client.readBlog(readBlogRequest, (error, response) => {
+        if(!error) {
+            console.log("Found a blog ", response.toString())
+        }else {
+            if(error.code === grpc.status.NOT_FOUND){
+                console.log("Not found")
+            }else {
+                //do someting else
+                console.error(error)
+            }
+        }
+    })
+}
+
 function main() {
     //callListBlogs()
-    callCreateBlog()
+    //callCreateBlog()
+    callReadBlog()
 }
 
 main()

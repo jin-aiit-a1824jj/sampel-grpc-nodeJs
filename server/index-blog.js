@@ -85,7 +85,7 @@ function readBlog(call, callback) {
       blog.setTitle(data[0].title)
       blog.setContent(data[0].content)
 
-      var blogResponse = new blog.ReadBlogResponse()
+      var blogResponse = new blogs.ReadBlogResponse()
       blogResponse.setBlog(blog)
 
       callback(null, blogResponse)
