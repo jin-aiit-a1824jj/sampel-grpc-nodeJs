@@ -5,6 +5,8 @@ package blog;
 service BlogService {
     // All our API's
     rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse);
+
+    rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse);
 }
 
 message Blog {
@@ -19,5 +21,13 @@ message ListBlogRequest{
 }
 
 message ListBlogResponse{
+    Blog blog = 1;
+}
+
+message CreateBlogRequest {
+    Blog blog = 1;
+}
+
+message CreateBlogResponse {
     Blog blog = 1;
 }

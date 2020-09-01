@@ -34,6 +34,35 @@ function listBlog(call, callback) {
     
 }
 
+function createBlog(call, callback) {
+  console.log('Received Create blog request')
+
+  var blog = call.request.getBlog()
+  console.log('Inserting blog ...')
+
+  knex("blogs").insert({
+    author: blog.getAuthor(),
+    title:blog.getTitle(),
+    content: blog.getContent()
+  }).then(() => {
+    var id = blog.getId()
+    var addedBlog = new blogs.Blog()
+
+    //set the blog response to be returned
+    addedBlog.setId(id)
+    addedBlog.setAuthor(blog.getAuthor())
+    addedBlog.setTitle(blog.getTitle())
+    addedBlog.setContent(blog.getContent())
+
+    var blogResponse = new blogs.CreateBlogResponse()
+    blogResponse.setBlog(addedBlog)
+    
+    console.log('Inserted Blog with ID: ', blogResponse.getId())
+    callback(null, blogResponse)
+  })
+  
+}
+
 function main() {
 
     let unsafeCred = grpc.ServerCredentials.createInsecure()
@@ -41,7 +70,8 @@ function main() {
     var server = new grpc.Server()
     server.addService(service.BlogServiceService, 
       {
-        listBlog:listBlog
+        listBlog:listBlog,
+        createBlog:createBlog
       }
     )
     server.bind("0.0.0.0:5000", unsafeCred)
