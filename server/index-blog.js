@@ -63,6 +63,46 @@ function createBlog(call, callback) {
   
 }
 
+function readBlog(call, callback) {
+  console.log('Received Read blog request')
+
+  // get id
+  var blogId = call.request.getBlogId()
+  
+  knex("blogs")
+  .where({ id: parseInt(blogId)})
+  .then(data => {
+    console.log("Searching for a blog...")
+
+    if (data.length){
+      var blog = new blogs.Blog()
+
+      console.log("Blog found and sending message");
+
+      //set the blog response to be returned
+      blog.setId(data[0].id + '')
+      blog.setAuthor(data[0].author)
+      blog.setTitle(data[0].title)
+      blog.setContent(data[0].content)
+
+      var blogResponse = new blog.ReadBlogResponse()
+      blogResponse.setBlog(blog)
+
+      callback(null, blogResponse)
+
+    } else {
+
+      console.log("Blog not found")
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        message: "Blog not Found!"
+      })
+
+    }
+  })
+
+}
+
 function main() {
 
     let unsafeCred = grpc.ServerCredentials.createInsecure()
@@ -71,7 +111,8 @@ function main() {
     server.addService(service.BlogServiceService, 
       {
         listBlog:listBlog,
-        createBlog:createBlog
+        createBlog:createBlog,
+        readBlog:readBlog
       }
     )
     server.bind("0.0.0.0:5000", unsafeCred)
